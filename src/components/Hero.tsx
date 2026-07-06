@@ -160,7 +160,7 @@ export default function Hero() {
               <div className="relative w-72 md:w-80 rounded-2xl overflow-hidden border"
                 style={{ borderColor: "rgba(34,211,238,0.15)", background: "var(--card)" }}>
                 <Image
-                  src="/profile-v3.jpg"
+                  src="/profile-v6.jpg"
                   alt="Ashraful Islam Akash"
                   width={320}
                   height={400}
