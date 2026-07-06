@@ -31,35 +31,50 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setVisible(false);
     const handleMouseEnter = () => setVisible(true);
 
-    const handleHoverStart = () => setHovered(true);
-    const handleHoverEnd = () => setHovered(false);
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target &&
+        (target.closest("a") ||
+         target.closest("button") ||
+         target.closest("[role='button']") ||
+         target.closest("input") ||
+         target.closest("select") ||
+         target.closest("textarea") ||
+         target.closest(".interactive-hover"))
+      ) {
+        setHovered(true);
+      }
+    };
+
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target &&
+        (target.closest("a") ||
+         target.closest("button") ||
+         target.closest("[role='button']") ||
+         target.closest("input") ||
+         target.closest("select") ||
+         target.closest("textarea") ||
+         target.closest(".interactive-hover"))
+      ) {
+        setHovered(false);
+      }
+    };
 
     window.addEventListener("mousemove", moveCursor);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
-
-    const attachHoverEvents = () => {
-      const interactives = document.querySelectorAll(
-        "a, button, [role='button'], input, select, textarea, .interactive-hover"
-      );
-      interactives.forEach((el) => {
-        el.addEventListener("mouseenter", handleHoverStart);
-        el.addEventListener("mouseleave", handleHoverEnd);
-      });
-    };
-
-    // Attach initial events
-    attachHoverEvents();
-
-    // Re-attach when children change dynamically
-    const observer = new MutationObserver(attachHoverEvents);
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseout", handleMouseOut);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
-      observer.disconnect();
+      document.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseout", handleMouseOut);
     };
   }, [cursorX, cursorY, visible]);
 

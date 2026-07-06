@@ -21,6 +21,7 @@ export default function HeroVisual() {
     let animId: number;
     let particles: Particle[] = [];
     let time = 0;
+    let isVisible = true;
 
     // Refined sky-blue + violet palette (NOT harsh neon)
     const colors = [
@@ -141,6 +142,7 @@ export default function HeroVisual() {
     };
 
     const draw = () => {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       time += 0.015;
       drawAurora();
@@ -173,8 +175,26 @@ export default function HeroVisual() {
       animId = requestAnimationFrame(draw);
     };
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            draw();
+          } else {
+            cancelAnimationFrame(animId);
+          }
+        });
+      },
+      { threshold: 0.01 }
+    );
+
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
+
     window.addEventListener("resize", resize);
-    resize(); draw();
+    resize();
 
     const onMove = (e: MouseEvent) => {
       const r = canvas.getBoundingClientRect();
@@ -186,6 +206,7 @@ export default function HeroVisual() {
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       canvas.parentElement?.removeEventListener("mousemove", onMove);
       canvas.parentElement?.removeEventListener("mouseleave", onLeave);
