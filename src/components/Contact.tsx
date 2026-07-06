@@ -138,7 +138,7 @@ export default function Contact() {
       if (attachment && isSupabaseConfigured) {
         const cleanName = attachment.name.replace(/[^a-zA-Z0-9.]/g, "_");
         const fileName = `${Date.now()}_${cleanName}`;
-        const uploadUrl = `${supabaseUrl}/storage/v1/object/portfolio-attachments/${fileName}`;
+        const uploadUrl = `${supabaseUrl}/storage/v1/object/my-portfolio-attachments/${fileName}`;
 
         const uploadResponse = await fetch(uploadUrl, {
           method: "POST",
@@ -153,10 +153,10 @@ export default function Contact() {
         if (!uploadResponse.ok) {
           const errData = await uploadResponse.json().catch(() => ({}));
           console.error("Supabase upload error:", errData);
-          throw new Error("Failed to upload attachment to Supabase Storage.");
+          throw new Error(`Supabase Upload Error: ${errData.message || errData.error || "Access Denied (Check RLS Policies)"}`);
         }
 
-        attachmentUrl = `${supabaseUrl}/storage/v1/object/public/portfolio-attachments/${fileName}`;
+        attachmentUrl = `${supabaseUrl}/storage/v1/object/public/my-portfolio-attachments/${fileName}`;
       }
 
       const formData = new FormData();
@@ -222,9 +222,9 @@ export default function Contact() {
       } else {
         alert(result.message || "Something went wrong. Please check if your Access Key is correct.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Form submission error:", err);
-      alert("Failed to send message. Please check your internet connection.");
+      alert(err?.message || "Failed to send message. Please check your connection.");
     } finally {
       setLoading(false);
     }
