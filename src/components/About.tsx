@@ -50,7 +50,7 @@ export default function About() {
               <div className="relative rounded-2xl overflow-hidden"
                 style={{ border: "1px solid rgba(34,211,238,0.15)" }}>
                 <Image
-                  src="/profile.jpg"
+                  src="/profile-v3.jpg"
                   alt="Ashraful Islam Akash"
                   width={360}
                   height={420}
