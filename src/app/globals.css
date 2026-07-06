@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+/* =============================================================
+   DESIGN SYSTEM — "Premium Dark. Clean. Alive."
+   Deep navy-black + Sky Cyan + Indigo Purple
+   ============================================================= */
+
+:root, .dark {
+  --background: #050a14;
+  --surface:    #0b1220;
+  --card:       #0f1829;
+  --foreground: #f1f5f9;
+  --secondary:  #64748b;
+  --accent:     #22d3ee;   /* sky-cyan */
+  --accent-purple: #818cf8; /* indigo */
+  --border:     rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(34, 211, 238, 0.25);
+  --glow:       rgba(34, 211, 238, 0.15);
+  --glow-2:     rgba(129, 140, 248, 0.12);
+  --dot-color:  rgba(255, 255, 255, 0.03);
+}
+
+.light {
+  --background: #f8faff;
+  --surface:    #eef3fc;
+  --card:       #ffffff;
+  --foreground: #0d1929;
+  --secondary:  #4b6080;
+  --accent:     #0284c7;
+  --accent-purple: #6d28d9;
+  --border:     rgba(0, 0, 0, 0.07);
+  --border-accent: rgba(2, 132, 199, 0.25);
+  --glow:       rgba(2, 132, 199, 0.12);
+  --glow-2:     rgba(109, 40, 217, 0.1);
+  --dot-color:  rgba(0, 0, 0, 0.03);
+}
+
+/* ── Tailwind v4 Theme Registration ── */
+@theme {
+  --color-background:    var(--background);
+  --color-surface:       var(--surface);
+  --color-card:          var(--card);
+  --color-foreground:    var(--foreground);
+  --color-secondary:     var(--secondary);
+  --color-accent:        var(--accent);
+  --color-accent-purple: var(--accent-purple);
+  --color-border:        var(--border);
+
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Fira Code", monospace;
+
+  @keyframes shimmer {
+    0%   { background-position: -250% 0; }
+    100% { background-position:  250% 0; }
+  }
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 0.2; transform: scale(1.4); }
+  }
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50%       { background-position: 100% 50%; }
+  }
+}
+
+/* ── Base ── */
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  min-height: 100vh;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), var(--accent-purple));
+  border-radius: 9999px;
+}
+
+/* ── Cursor ── */
+@media (hover: hover) {
+  .cursor-none, .cursor-none * { cursor: none; }
+}
+
+/* ══════════════════════════════════════════
+   UTILITY CLASSES
+   ══════════════════════════════════════════ */
+
+/* Gradient text: cyan → indigo */
+.text-gradient {
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated shimmer text */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--foreground) 0%,
+    var(--accent) 25%,
+    var(--accent-purple) 50%,
+    var(--foreground) 75%,
+    var(--accent) 100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Gradient background: cyan → indigo */
+.bg-gradient-neon {
+  background: linear-gradient(120deg, var(--accent), var(--accent-purple));
+}
+
+/* Glassmorphism card */
+.glass {
+  background: rgba(15, 24, 41, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Section label pill */
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 5px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  background: rgba(34, 211, 238, 0.06);
+  margin-bottom: 14px;
+}
+
+/* Dot grid overlay */
+.dot-grid {
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Card base */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px var(--glow);
+}
+
+/* Accent border-left highlight on cards */
+.card-accent-left {
+  border-left: 2px solid var(--accent) !important;
+}
+
+/* Glow text shadow */
+.text-glow {
+  text-shadow: 0 0 30px var(--glow);
+}
+
+/* Line separator */
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+}
+
+/* Online ping dot */
+.ping-dot {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+}
+.ping-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse-ring 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.ping-dot::after {
+  content: '';
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  z-index: 1;
+}
+
+/* Section wrapper utility */
+.section-pad {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
